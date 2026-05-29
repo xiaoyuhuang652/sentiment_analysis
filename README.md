@@ -1,20 +1,20 @@
-# IMDb Sentiment Analysis
+# Sentiment Analysis Project
 
-## Project Overview
-This project performs sentiment classification on IMDb movie reviews using TF-IDF and Logistic Regression.
+## Overview
+A machine learning project using TF-IDF and Logistic Regression to classify IMDb movie reviews.
 
 ## Dataset
 IMDb dataset from HuggingFace
 
-## Method
-- TF-IDF (1-2 grams)
-- Logistic Regression
+## Model
+- TF-IDF (1-2 gram)
+- Logistic Regression (C=2.0)
+
+## Performance
+Accuracy: 87%
 
 ## Result
-- Accuracy: ~87%
-
-## Visualization
 Confusion Matrix included
 
 ## Tech Stack
-Python, Scikit-learn, Pandas
+Python, sklearn, pandas, matplotlib
