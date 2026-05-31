@@ -28,7 +28,15 @@ Labels:
 
 ## Model Pipeline
 
-Text Reviews → TF-IDF Vectorization → Logistic Regression → Prediction → Evaluation
+Text Reviews
+↓
+TF-IDF Vectorization
+↓
+Logistic Regression
+↓
+Prediction
+↓
+Evaluation
 
 ---
 
@@ -54,7 +62,11 @@ Logistic Regression
 
 ## Results
 
-Accuracy: 87%
+Accuracy: 87.0%
+
+The model achieved strong performance on the IMDb
+test dataset using TF-IDF features and Logistic Regression.
+
 
 Metrics:
 
@@ -68,16 +80,32 @@ Metrics:
 
 Confusion Matrix
 
+
+![Confusion Matrix](results/confusion_matrix.png)
 ---
 
 ## Future Improvements
 
-- Support LSTM
-- Support BERT
-- Hyperparameter Tuning
-- Error Analysis
+- Compare multiple machine learning models (SVM, Naive Bayes)
+- Implement LSTM-based sentiment classification
+- Fine-tune BERT for sentiment analysis
+- Perform hyperparameter optimization
+- Conduct error analysis on misclassified reviews
 
 ---
+
+## Project Structure
+
+```text
+sentiment_analysis/
+│
+├── main.py
+├── README.md
+├── results/
+│   └── confusion_matrix.png
+└── requirements.txt
+```
+
 
 ## Tech Stack
 
@@ -86,3 +114,17 @@ Scikit-learn
 Pandas
 Matplotlib
 Seaborn
+
+## How to Run
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the project:
+
+```bash
+python main.py
+```
