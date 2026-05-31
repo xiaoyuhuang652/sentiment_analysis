@@ -4,10 +4,10 @@
 
 This project performs binary sentiment classification
 on IMDb movie reviews using TF-IDF features and
-Logistic Regression.
+multiple machine learning models.
 
-The goal is to classify reviews as positive or negative.
-
+The goal is to classify reviews as positive or negative
+and compare the performance of different classifiers.
 ---
 
 ## Dataset
@@ -30,7 +30,7 @@ Labels:
 
 Text Reviews
 → TF-IDF Vectorization
-→ Model Training (LogReg / SVM)
+→ Model Training (Logistic Regression / SVM / Naive Bayes)
 → Prediction
 → Evaluation
 ---
@@ -57,21 +57,35 @@ TF-IDF
 
 - LinearSVC()
 
+### Naive Bayes
+
+- MultinomialNB()
+
+
 ## Results
 
-Accuracy: 87.0%
+The following models were evaluated on the sampled
+IMDb dataset:
 
-The model achieved strong performance on the IMDb
-test dataset using TF-IDF features and Logistic Regression.
+| Model | Accuracy |
+|------|---------|
+| Logistic Regression | 87.0% |
+| Linear SVM | 85.6% |
+| Naive Bayes | 83.7% |
 
-
-Metrics:
-
-- Precision
-- Recall
-- F1-score
 
 ---
+
+## Experiments
+
+Three traditional machine learning models were compared
+using the same TF-IDF feature representation.
+
+Results show that Logistic Regression achieved the best
+performance on the sampled IMDb dataset, while Linear SVM
+produced competitive results. Naive Bayes achieved lower
+accuracy due to its strong independence assumptions.
+
 
 ## Visualization
 
@@ -83,12 +97,11 @@ Confusion Matrix
 
 ## Future Improvements
 
-- Compare multiple machine learning models (SVM, Naive Bayes)
+- Hyperparameter tuning for existing models
 - Implement LSTM-based sentiment classification
 - Fine-tune BERT for sentiment analysis
-- Perform hyperparameter optimization
 - Conduct error analysis on misclassified reviews
-
+- Compare traditional ML methods with deep learning approaches
 ---
 
 ## Project Structure
@@ -125,13 +138,6 @@ Run the project:
 python main.py
 ```
 
-## Model Comparison
-
-| Model | Accuracy |
-|------|---------|
-| Logistic Regression | 87.0% |
-| Linear SVM | 85.6% |
-| Naive Bayes | 83.7% |
 
 ## Conclusion
 
@@ -139,6 +145,6 @@ Among the tested traditional machine learning models,
 Logistic Regression achieved the best performance
 (87.0%) on the sampled IMDb dataset.
 
-Linear SVM achieved comparable performance,
+Linear SVM achieved competitive performance,
 while Naive Bayes showed lower accuracy due to
 its strong feature independence assumption.
