@@ -105,7 +105,7 @@ sentiment_analysis/
 │   └── confusion_matrix.png
 └── requirements.txt
 ```
-
+git pull origin main --rebase
 
 ## Tech Stack
 
