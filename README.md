@@ -10,6 +10,13 @@ The goal is to classify reviews as positive or negative
 and compare the performance of different classifiers.
 ---
 
+## Key Highlights
+
+- Built complete NLP pipeline from raw text to evaluation
+- Compared three classical ML models
+- Performed hyperparameter tuning
+- Conducted error analysis with interpretability
+
 ## Dataset
 
 Source:
@@ -30,8 +37,7 @@ Labels:
 
 Text Reviews
 → TF-IDF Vectorization
-→ Model Training (Logistic Regression / SVM / Naive Bayes)
-→ Prediction
+→ Model Training
 → Evaluation
 ---
 
@@ -73,18 +79,27 @@ IMDb dataset:
 | Linear SVM | 85.6% |
 | Naive Bayes | 83.7% |
 
+### Per-class Performance
+
+We report precision, recall, and F1-score for both classes.
+
+This helps evaluate whether the model is biased toward
+positive or negative sentiment.
+
+
 
 ---
 
 ## Experiments
 
-Three traditional machine learning models were compared
-using the same TF-IDF feature representation.
+Although all models use the same TF-IDF features,
+their performance differs due to their underlying assumptions.
 
-Results show that Logistic Regression achieved the best
-performance on the sampled IMDb dataset, while Linear SVM
-produced competitive results. Naive Bayes achieved lower
-accuracy due to its strong independence assumptions.
+Logistic Regression performs best due to its ability
+to learn feature weights effectively.
+
+Linear SVM achieves similar performance, while
+Naive Bayes is limited by its independence assumption.
 
 
 ## Visualization
@@ -95,13 +110,61 @@ Confusion Matrix
 ![Confusion Matrix](results/confusion_matrix.png)
 ---
 
+## Hyperparameter Tuning
+
+We tuned the regularization parameter C for Logistic Regression.
+
+The results are shown below:
+
+![LR Tuning](results/lr_tuning.png)
+
+### Observation
+
+- Performance improves when C increases from 0.01 to 2.0
+- Best performance is achieved around C = 2.0
+- Too large C does not significantly improve results
+
+
+
+
+## Error Analysis
+
+Error analysis is performed on the Logistic Regression model.
+We use heuristic rules to categorize common error patterns.
+### Error Distribution
+
+![Error Analysis](results/error_analysis.png)
+
+### Observations
+
+- Long reviews are the most difficult to classify
+- Negation sentences cause significant errors
+- Remaining errors come from ambiguous or mixed sentiment text
+
+### Example Misclassified Samples
+
+We inspect some incorrectly predicted samples to better understand model limitations.
+
+- Text: "not bad at all"
+  - True: Positive
+  - Pred: Negative
+  - Reason: Negation handling issue
+
+- Text: "The movie started well but became boring later..."
+  - True: Positive
+  - Pred: Negative
+  - Reason: Mixed sentiment in long text
+
+These examples show that TF-IDF + linear models struggle with
+context and compositional meaning.
+
+
 ## Future Improvements
 
-- Hyperparameter tuning for existing models
-- Implement LSTM-based sentiment classification
-- Fine-tune BERT for sentiment analysis
-- Conduct error analysis on misclassified reviews
-- Compare traditional ML methods with deep learning approaches
+- Explore advanced feature engineering (e.g., n-grams tuning, TF-IDF variants)
+- Implement deep learning models (LSTM, BERT)
+- Conduct error analysis on misclassified samples
+- Compare traditional ML methods with transformer-based models
 ---
 
 ## Project Structure
@@ -141,10 +204,11 @@ python main.py
 
 ## Conclusion
 
-Among the tested traditional machine learning models,
-Logistic Regression achieved the best performance
-(87.0%) on the sampled IMDb dataset.
+This project demonstrates a complete NLP pipeline
+for sentiment classification using traditional machine learning methods.
 
-Linear SVM achieved competitive performance,
-while Naive Bayes showed lower accuracy due to
-its strong feature independence assumption.
+Among all tested models, Logistic Regression achieved the best performance,
+showing strong effectiveness on TF-IDF-based text features.
+
+The results also highlight the trade-offs between different classifiers:
+simplicity (Naive Bayes), robustness (SVM), and overall performance (LogReg).
