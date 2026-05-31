@@ -119,3 +119,10 @@ Run the project:
 ```bash
 python main.py
 ```
+
+## Model Comparison
+
+| Model | Accuracy |
+|------|---------|
+| Logistic Regression | 87.0% |
+| Linear SVM | 85.6% |

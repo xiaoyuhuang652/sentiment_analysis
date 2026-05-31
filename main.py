@@ -15,6 +15,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 
+from sklearn.svm import LinearSVC
+
+
+
+
 # ===== 2. Load IMDb Dataset =====
 
 dataset = load_dataset("imdb")
@@ -72,6 +77,21 @@ print(f"Accuracy: {accuracy:.3f}")
 
 print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
+
+
+
+
+# ===== Train SVM Model =====
+svm_model = LinearSVC()
+
+svm_model.fit(X_train, y_train)
+
+svm_pred = svm_model.predict(X_test)
+
+svm_accuracy = accuracy_score(y_test, svm_pred)
+
+print(f"SVM Accuracy: {svm_accuracy:.3f}")
+
 
 
 # ===== 7. Confusion Matrix Visualization =====
