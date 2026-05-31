@@ -28,15 +28,7 @@ Labels:
 
 ## Model Pipeline
 
-Text Reviews
-↓
-TF-IDF Vectorization
-↓
-Logistic Regression
-↓
-Prediction
-↓
-Evaluation
+Text Reviews → TF-IDF Vectorization → Logistic Regression → Prediction → Evaluation
 
 ---
 
@@ -105,15 +97,14 @@ sentiment_analysis/
 │   └── confusion_matrix.png
 └── requirements.txt
 ```
-git pull origin main --rebase
 
 ## Tech Stack
 
-Python
-Scikit-learn
-Pandas
-Matplotlib
-Seaborn
+- Python
+- Scikit-learn
+- Pandas
+- Matplotlib
+- Seaborn
 
 ## How to Run
 
