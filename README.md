@@ -1,4 +1,4 @@
-# IMDb Sentiment Analysis
+# Sentiment Analysis
 
 ## Overview
 
