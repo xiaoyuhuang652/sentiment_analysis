@@ -28,8 +28,11 @@ Labels:
 
 ## Model Pipeline
 
-Text Reviews → TF-IDF Vectorization → Logistic Regression → Prediction → Evaluation
-
+Text Reviews
+→ TF-IDF Vectorization
+→ Model Training (LogReg / SVM)
+→ Prediction
+→ Evaluation
 ---
 
 ## Feature Engineering
@@ -42,15 +45,17 @@ TF-IDF
 
 ---
 
-## Model
+## Models
 
-Logistic Regression
+### Logistic Regression
 
 - solver='liblinear'
 - max_iter=2000
 - C=2.0
 
----
+### Linear SVM
+
+- LinearSVC()
 
 ## Results
 
