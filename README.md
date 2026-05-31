@@ -28,15 +28,7 @@ Labels:
 
 ## Model Pipeline
 
-Text Reviews
-→
-TF-IDF Vectorization
-↓
-Logistic Regression
-↓
-Prediction
-↓
-Evaluation
+Text Reviews → TF-IDF Vectorization → Logistic Regression → Prediction → Evaluation
 
 ---
 
