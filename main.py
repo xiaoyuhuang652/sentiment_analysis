@@ -17,7 +17,7 @@ import seaborn as sns
 
 from sklearn.svm import LinearSVC
 
-
+from sklearn.naive_bayes import MultinomialNB
 
 
 # ===== 2. Load IMDb Dataset =====
@@ -91,6 +91,22 @@ svm_pred = svm_model.predict(X_test)
 svm_accuracy = accuracy_score(y_test, svm_pred)
 
 print(f"SVM Accuracy: {svm_accuracy:.3f}")
+
+
+
+# ===== Train Naive Bayes Model =====
+
+nb_model = MultinomialNB()
+
+nb_model.fit(X_train, y_train)
+
+nb_pred = nb_model.predict(X_test)
+
+nb_accuracy = accuracy_score(y_test, nb_pred)
+
+print(f"Naive Bayes Accuracy: {nb_accuracy:.3f}")
+
+
 
 
 

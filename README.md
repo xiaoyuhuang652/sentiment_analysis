@@ -131,3 +131,14 @@ python main.py
 |------|---------|
 | Logistic Regression | 87.0% |
 | Linear SVM | 85.6% |
+| Naive Bayes | 83.7% |
+
+## Conclusion
+
+Among the tested traditional machine learning models,
+Logistic Regression achieved the best performance
+(87.0%) on the sampled IMDb dataset.
+
+Linear SVM achieved comparable performance,
+while Naive Bayes showed lower accuracy due to
+its strong feature independence assumption.
