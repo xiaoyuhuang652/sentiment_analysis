@@ -29,7 +29,7 @@ Labels:
 ## Model Pipeline
 
 Text Reviews
-↓
+→
 TF-IDF Vectorization
 ↓
 Logistic Regression
