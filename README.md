@@ -81,10 +81,9 @@ IMDb dataset:
 
 ### Per-class Performance
 
-We report precision, recall, and F1-score for both classes.
+We use sklearn's classification_report to obtain precision, recall, and F1-score for each class (positive and negative).
 
-This helps evaluate whether the model is biased toward
-positive or negative sentiment.
+This allows us to evaluate whether the model performs consistently across different sentiment classes and detect potential class bias.
 
 
 

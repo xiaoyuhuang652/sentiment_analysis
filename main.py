@@ -79,9 +79,12 @@ print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 
 # ⭐ 新增（你要加的）
-print("\n===== Per-class Performance =====")
+print("\n===== Per-class Performance =====")    # 这部分之后再仔细斟酌，问题不大
 print("This shows precision/recall/F1 for each class")
+report_text = classification_report(y_test, y_pred)
+print(report_text)
 
+# 简单用正则或字符串解析每行获取每个 class 的 precision/recall/F1
 
 
 
@@ -240,7 +243,7 @@ for i in wrong_indices[:5]:
 # ===== 9. Logistic Regression Hyperparameter Tuning =====
 
 print("\n===== Logistic Regression Hyperparameter Tuning =====")
-
+# 对 Logistic Regression 的 C 做了循环调参
 c_values = [0.01, 0.1, 1.0, 2.0, 5.0, 10.0]
 
 tuning_results = []
