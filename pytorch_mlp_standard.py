@@ -105,6 +105,9 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 # =====================
 # 8. 训练（带验证集）
 # =====================
+train_losses = []
+val_accuracies = []
+
 epochs = 10
 
 for epoch in range(epochs):
@@ -138,6 +141,9 @@ for epoch in range(epochs):
     val_acc = accuracy_score(val_labels, val_preds)
     print(f"Epoch {epoch+1}/{epochs} - Loss: {epoch_loss:.4f}, Val Accuracy: {val_acc:.4f}")
 
+    train_losses.append(epoch_loss)
+    val_accuracies.append(val_acc)
+
 # =====================
 # 9. 测试集最终评估
 # =====================
@@ -154,3 +160,25 @@ with torch.no_grad():
 
 test_acc = accuracy_score(test_labels, test_preds)
 print(f"\nFinal Test Accuracy: {test_acc:.4f}")
+
+import matplotlib.pyplot as plt
+
+epochs_range = range(1, epochs + 1)
+
+plt.figure(figsize=(8,5))
+
+# Loss 曲线
+plt.plot(epochs_range, train_losses, label='Train Loss', marker='o')
+
+# Validation Accuracy 曲线
+plt.plot(epochs_range, val_accuracies, label='Val Accuracy', marker='s')
+
+plt.xlabel("Epoch")
+plt.ylabel("Value")
+plt.title("Training Loss & Validation Accuracy")
+plt.legend()
+plt.grid(True)
+
+plt.tight_layout()
+plt.savefig("results/training_curves.png")
+plt.show()
