@@ -108,6 +108,15 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 train_losses = []
 val_accuracies = []
 
+
+best_val_acc = 0
+
+patience = 3
+
+counter = 0
+
+
+
 epochs = 10
 
 for epoch in range(epochs):
@@ -139,6 +148,37 @@ for epoch in range(epochs):
             val_labels.extend(y_batch.tolist())
 
     val_acc = accuracy_score(val_labels, val_preds)
+
+
+    if val_acc > best_val_acc:
+
+        best_val_acc = val_acc
+
+        counter = 0
+
+        torch.save(
+            model.state_dict(),
+            "results/best_model.pth"
+        )
+
+        print("Best model saved.")
+
+    else:
+
+        counter += 1
+
+        print(
+            f"Validation not improved for {counter} epoch(s)"
+        )
+
+        if counter >= patience:
+            print(
+                "\nEarly Stopping Triggered!"
+            )
+
+            break
+
+
     print(f"Epoch {epoch+1}/{epochs} - Loss: {epoch_loss:.4f}, Val Accuracy: {val_acc:.4f}")
 
     train_losses.append(epoch_loss)
@@ -161,9 +201,19 @@ with torch.no_grad():
 test_acc = accuracy_score(test_labels, test_preds)
 print(f"\nFinal Test Accuracy: {test_acc:.4f}")
 
+
+
+
+### 绘制 Loss & Validation Accuracy 曲线
+
 import matplotlib.pyplot as plt
 
-epochs_range = range(1, epochs + 1)
+# epochs_range = range(1, epochs + 1)
+
+epochs_range = range(
+    1,
+    len(train_losses) + 1
+)
 
 plt.figure(figsize=(8,5))
 
