@@ -158,6 +158,14 @@ model = MLP(input_dim)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
+# 7.1 Learning Rate Scheduler
+scheduler = torch.optim.lr_scheduler.StepLR(
+    optimizer,
+    step_size=2,   # 每2个epoch调整一次
+    gamma=0.5      # 学习率 × 0.5
+)
+
+
 # =====================
 # 8. 训练（带验证集）
 # =====================
@@ -207,6 +215,9 @@ for epoch in range(epochs):
         loss = criterion(outputs, y_batch)
         loss.backward()
         optimizer.step()
+
+        scheduler.step()
+
         running_loss += loss.item() * X_batch.size(0)
 
     epoch_loss = running_loss / len(train_loader.dataset)
