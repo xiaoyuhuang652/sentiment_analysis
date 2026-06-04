@@ -78,20 +78,76 @@ test_loader  = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
 # =====================
 # 6. 定义 MLP（加入 Dropout）
 # =====================
+# class MLP(nn.Module):
+#     def __init__(self, input_dim):
+#         super().__init__()
+#         self.fc1 = nn.Linear(input_dim, 128)
+#         self.relu = nn.ReLU()
+#         self.dropout = nn.Dropout(0.5)  # 50% dropout
+#         self.fc2 = nn.Linear(128, 2)
+#
+#     def forward(self, x):
+#         x = self.fc1(x)
+#         x = self.relu(x)
+#         x = self.dropout(x)
+#         x = self.fc2(x)
+#         return x
+#
+#     # def forward(self, x):
+#     #     print("\n========== INPUT ==========")
+#     #     print(x.shape)
+#     #
+#     #     x = self.fc1(x)
+#     #
+#     #     print("\n========== FC1 OUTPUT ==========")
+#     #     print(x.shape)
+#     #     print("FC1 sample:", x[0][:10])
+#     #
+#     #     x = self.relu(x)
+#     #
+#     #     print("\n========== RELU ==========")
+#     #     print(x[0][:10])
+#     #
+#     #     x = self.dropout(x)
+#     #
+#     #     print("\n========== DROPOUT ==========")
+#     #     print(x[0][:10])
+#     #
+#     #     x = self.fc2(x)
+#     #
+#     #     print("\n========== FC2 OUTPUT ==========")
+#     #     print(x.shape)
+#     #     print(x[0])
+#     #
+#     #     return x
+
+
 class MLP(nn.Module):
     def __init__(self, input_dim):
         super().__init__()
-        self.fc1 = nn.Linear(input_dim, 128)
-        self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.5)  # 50% dropout
-        self.fc2 = nn.Linear(128, 2)
+
+        self.net = nn.Sequential(
+            nn.Linear(input_dim, 512),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+
+            nn.Linear(512, 256),
+            nn.ReLU(),
+            nn.Dropout(0.5),
+
+            nn.Linear(256, 128),
+            nn.ReLU(),
+
+            nn.Linear(128, 2)
+        )
 
     def forward(self, x):
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.dropout(x)
-        x = self.fc2(x)
-        return x
+        return self.net(x)
+
+
+
+
+
 
 input_dim = X_train.shape[1]
 model = MLP(input_dim)
@@ -124,8 +180,30 @@ for epoch in range(epochs):
     running_loss = 0.0
 
     for X_batch, y_batch in train_loader:
+
+        # print("\n========== BATCH ==========")
+        # print("X_batch shape:", X_batch.shape)
+        # print("y_batch shape:", y_batch.shape)
+        #
+        # print("X_batch[0][:20]:", X_batch[0][:20])  # 看第一条评论前20个特征
+        # print("y_batch[:10]:", y_batch[:10])
+        #
+        # break
+
+
         optimizer.zero_grad()
         outputs = model(X_batch)
+
+
+        # print("\n========== LOGITS ==========")
+        # print(outputs[:3])
+        #
+        # preds = torch.argmax(outputs, dim=1)
+        #
+        # print("\n========== PRED ==========")
+        # print(preds[:10])
+
+
         loss = criterion(outputs, y_batch)
         loss.backward()
         optimizer.step()
