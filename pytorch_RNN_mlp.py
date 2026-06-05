@@ -80,16 +80,19 @@ test_loader  = DataLoader(list(zip(test_indices, test_labels)), batch_size=batch
 # 5. 定义模型 (Embedding + RNN + Linear)
 # =====================
 class RNNMLP(nn.Module):
-    def __init__(self, vocab_size, embed_dim=64, hidden_dim=64):
+    def __init__(self, vocab_size, embed_dim=128, hidden_dim=128):
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
         self.rnn = nn.RNN(embed_dim, hidden_dim, batch_first=True)
+        #self.rnn = nn.RNN(embed_dim, hidden_dim, batch_first=True, dropout=dropout)
+        #self.dropout = nn.Dropout(dropout)
         self.fc = nn.Linear(hidden_dim, 2)
 
     def forward(self, x):
         emb = self.embedding(x)
         out, hidden = self.rnn(emb)
         final = hidden[-1]
+        # final = self.dropout(final)
         logits = self.fc(final)
         return logits
 
