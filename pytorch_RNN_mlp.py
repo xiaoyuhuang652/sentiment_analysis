@@ -80,7 +80,7 @@ test_loader  = DataLoader(list(zip(test_indices, test_labels)), batch_size=batch
 # 5. 定义模型 (Embedding + RNN + Linear)
 # =====================
 class RNNMLP(nn.Module):
-    def __init__(self, vocab_size, embed_dim=50, hidden_dim=64):
+    def __init__(self, vocab_size, embed_dim=64, hidden_dim=64):
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
         self.rnn = nn.RNN(embed_dim, hidden_dim, batch_first=True)
@@ -104,7 +104,9 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 # =====================
 # 7. 训练 + 验证 + Early Stopping
 # =====================
-train_losses, val_accs = [], []
+#train_losses, val_accs = [], []
+train_losses = []
+val_accuracies = []
 best_val_acc = 0
 patience = 3
 counter = 0
@@ -149,7 +151,8 @@ for epoch in range(epochs):
 
     print(f"Epoch {epoch+1} - Loss: {epoch_loss:.4f}, Val Accuracy: {val_acc:.4f}")
     train_losses.append(epoch_loss)
-    val_accs.append(val_acc)
+    # val_accs.append(val_acc)
+    val_accuracies.append(val_acc)
 
 # =====================
 # 8. 测试集评估
@@ -165,3 +168,20 @@ with torch.no_grad():
 
 test_acc = accuracy_score(test_labels_list, test_preds)
 print(f"\nFinal Test Accuracy: {test_acc:.4f}")
+
+
+# =====================
+# 9. 绘制 Loss & Validation Accuracy
+# =====================
+epochs_range = range(1, len(train_losses)+1)
+plt.figure(figsize=(8,5))
+plt.plot(epochs_range, train_losses, label="Train Loss", marker='o')
+plt.plot(epochs_range, val_accuracies, label="Val Accuracy", marker='s')
+plt.xlabel("Epoch")
+plt.ylabel("Value")
+plt.title("Training Loss & Validation Accuracy (RNN MLP)")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("results/training_curves_RNN.png")
+plt.show()
