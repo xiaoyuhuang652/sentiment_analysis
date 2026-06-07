@@ -88,10 +88,37 @@ class AttentionClassifier(nn.Module):
         self.W_k = nn.Linear(embed_dim, embed_dim)
         self.W_v = nn.Linear(embed_dim, embed_dim)
 
+        self.ffn = nn.Sequential(
+                    nn.Linear(embed_dim, embed_dim * 2),
+                    nn.ReLU(),
+                    nn.Linear(embed_dim * 2, embed_dim)
+                    )
+
         self.fc = nn.Linear(embed_dim, num_classes)
 
+
+    # def forward(self, x):
+    #     # x: [batch, seq_len]
+    #     emb = self.embedding(x)  # [batch, seq_len, embed_dim]
+    #
+    #     Q = self.W_q(emb)
+    #     K = self.W_k(emb)
+    #     V = self.W_v(emb)
+    #
+    #     # attention score
+    #     scores = torch.bmm(Q, K.transpose(1, 2)) / (Q.size(-1) ** 0.5) # [batch, seq_len, seq_len]
+    #     attn = F.softmax(scores, dim=-1)
+    #
+    #     out = torch.bmm(attn, V)  # [batch, seq_len, embed_dim]
+    #
+    #     # pooling
+    #     out = out.mean(dim=1)  # [batch, embed_dim]
+    #     self.dropout = nn.Dropout(0.3)
+    #
+    #     logits = self.fc(out)
+    #     return logits
+
     def forward(self, x):
-        # x: [batch, seq_len]
         emb = self.embedding(x)  # [batch, seq_len, embed_dim]
 
         Q = self.W_q(emb)
@@ -99,16 +126,31 @@ class AttentionClassifier(nn.Module):
         V = self.W_v(emb)
 
         # attention score
-        scores = torch.bmm(Q, K.transpose(1, 2)) / (Q.size(-1) ** 0.5) # [batch, seq_len, seq_len]
+        scores = torch.bmm(Q, K.transpose(1, 2)) / (Q.size(-1) ** 0.5)
+
+        # ===== 这里加 mask =====
+        mask = (x != 0).unsqueeze(1)  # [batch, 1, seq_len]
+        scores = scores.masked_fill(mask == 0, -1e9)
+
         attn = F.softmax(scores, dim=-1)
 
-        out = torch.bmm(attn, V)  # [batch, seq_len, embed_dim]
+        # out = torch.bmm(attn, V)  # [batch, seq_len, embed_dim]
+        #
+        # # pooling
+        # out = out.mean(dim=1)  # [batch, embed_dim]
 
-        # pooling
-        out = out.mean(dim=1)  # [batch, embed_dim]
+
+        # ===== Attention Pooling =====
+        weights = torch.softmax(scores.mean(dim=1), dim=1)  # [batch, seq_len]
+
+        out = torch.sum(weights.unsqueeze(-1) * V, dim=1)  # [batch, embed_dim]
+
+        # ===== 加 FFN =====
+        out = self.ffn(out)  # [batch, embed_dim]
 
         logits = self.fc(out)
         return logits
+
 
 # =====================
 # 6. 模型 / loss / optimizer
