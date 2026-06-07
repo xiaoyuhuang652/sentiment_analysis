@@ -65,8 +65,8 @@ train_idx, val_idx, train_lab, val_lab = train_test_split(
 # =====================
 # 4. DataLoader + MAX_LEN 截断
 # =====================
-MAX_LEN = 200
-batch_size = 32
+MAX_LEN = 100
+batch_size = 256
 
 
 def collate_batch(batch):
@@ -88,14 +88,14 @@ test_loader = DataLoader(list(zip(test_indices, test_labels)), batch_size=batch_
 # 5. 定义 CNN 模型
 # =====================
 class CNNTextClassifier(nn.Module):
-    def __init__(self, vocab_size, embed_dim=128, num_classes=2, kernel_sizes=[3, 4, 5], num_filters=100):
+    def __init__(self, vocab_size, embed_dim=256, num_classes=2, kernel_sizes=[3, 4, 5], num_filters=200):
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
         self.convs = nn.ModuleList([
             nn.Conv1d(in_channels=embed_dim, out_channels=num_filters, kernel_size=k)
             for k in kernel_sizes
         ])
-        self.dropout = nn.Dropout(0.5)
+        self.dropout = nn.Dropout(0.7)
         self.fc = nn.Linear(num_filters * len(kernel_sizes), num_classes)
 
     def forward(self, x):
@@ -115,7 +115,7 @@ model = CNNTextClassifier(vocab_size=vocab_size)
 # 6. 损失与优化器
 # =====================
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.Adam(model.parameters(), lr=0.001)
+optimizer = optim.Adam(model.parameters(), lr=0.0005)
 
 # =====================
 # 7. 训练 + 验证 + Early Stopping
@@ -193,5 +193,56 @@ plt.ylabel("Value")
 plt.title("Training Loss & Val Accuracy (CNN)")
 plt.legend()
 plt.grid(True)
+plt.savefig("results/CNN training_curves.png")
 plt.tight_layout()
 plt.show()
+
+
+#
+# # cnn_text_visual.py
+# import matplotlib.pyplot as plt
+# from matplotlib.patches import Rectangle
+#
+# fig, ax = plt.subplots(figsize=(10,5))
+#
+# # ---------------------
+# # 绘制 Embedding 层
+# # ---------------------
+# ax.add_patch(Rectangle((0,2), 1, 2, facecolor='skyblue'))
+# ax.text(0.5,3, "Embedding\n(seq_len x embed_dim)", ha='center', va='center', fontsize=10)
+#
+# # ---------------------
+# # 绘制 Conv1D 层
+# # ---------------------
+# ax.add_patch(Rectangle((2,2.2), 1, 1.6, facecolor='lightgreen'))
+# ax.text(2.5,3, "Conv1D\n(kernel size k, filters f)", ha='center', va='center', fontsize=10)
+#
+# # ---------------------
+# # 绘制 MaxPool 层
+# # ---------------------
+# ax.add_patch(Rectangle((4,2.4), 1, 1.2, facecolor='salmon'))
+# ax.text(4.5,3, "Global MaxPool\n(over time)", ha='center', va='center', fontsize=10)
+#
+# # ---------------------
+# # 绘制 Fully Connected 层
+# # ---------------------
+# ax.add_patch(Rectangle((6,2.6), 1, 0.8, facecolor='plum'))
+# ax.text(6.5,3, "FC\n(num_classes)", ha='center', va='center', fontsize=10)
+#
+# # ---------------------
+# # 箭头
+# # ---------------------
+# ax.annotate("", xy=(1,3), xytext=(2,3), arrowprops=dict(arrowstyle="->", lw=2))
+# ax.annotate("", xy=(3,3), xytext=(4,3), arrowprops=dict(arrowstyle="->", lw=2))
+# ax.annotate("", xy=(5,3), xytext=(6,3), arrowprops=dict(arrowstyle="->", lw=2))
+#
+# # ---------------------
+# # 设置
+# # ---------------------
+# ax.set_xlim(-0.5, 7.5)
+# ax.set_ylim(1.5, 4.5)
+# ax.axis('off')
+# plt.title("CNN Text Classification Flow: Embedding → Conv1D → MaxPool → FC")
+# plt.tight_layout()
+# plt.savefig("results/CNN Text Classification Flow.png")
+# plt.show()
