@@ -18,7 +18,7 @@ from torch.optim import AdamW
 MODEL_NAME = "prajjwal1/bert-mini"
 MAX_LEN = 128
 BATCH_SIZE = 16
-EPOCHS = 3
+EPOCHS = 10
 LR = 2e-5
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
