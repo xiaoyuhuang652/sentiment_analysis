@@ -43,6 +43,7 @@ train_texts, val_texts, train_labels, val_labels = train_test_split(
 # =====================
 tokenizer = BertTokenizer.from_pretrained(MODEL_NAME)
 
+
 def encode(texts):
     return tokenizer(
         texts,
